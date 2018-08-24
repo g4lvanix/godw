@@ -54,7 +54,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	} else if nwords < 1 {
-		fmt.Print("Password must contain 1 word")
+		fmt.Print("Password must contain at least 1 word")
 		os.Exit(1)
 	}
 

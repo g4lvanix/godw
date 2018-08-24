@@ -17,7 +17,7 @@ The words are chosen according to a unifom distribution (every word is equally l
 After [installing go](https://golang.org/doc/install), simply run
 
 ```
-$ go get https://github.com/g4lvanix/godw.git
+$ go get github.com/g4lvanix/godw
 ```
 
 Additionally, please obtain one of the wordlists from the sources mentioned above.
