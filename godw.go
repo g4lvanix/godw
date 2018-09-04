@@ -54,7 +54,8 @@ func main() {
 	flag.Parse()
 
 	if *length == 0 {
-		fmt.Println("The passphrase/pin length must be greater than 0")
+		fmt.Print("The passphrase/pin length must be greater than 0\n\n")
+		flag.Usage()
 		os.Exit(1)
 	}
 
