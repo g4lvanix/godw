@@ -3,12 +3,17 @@ package main
 import (
 	"bufio"
 	"crypto/rand"
+	"flag"
 	"fmt"
 	"math/big"
 	"os"
 	"strconv"
 	"strings"
 )
+
+var filename = flag.String("f", "eff_large_wordlist.txt", "name of the diceware wordlist file")
+var pin = flag.Bool("p", false, "generate a numeric pin")
+var length = flag.Int("l", 0, "length of the generated passphrase or pin")
 
 func getWords(fname string) ([]string, error) {
 	var words []string
@@ -27,43 +32,40 @@ func getWords(fname string) ([]string, error) {
 	return words, nil
 }
 
-func chooseWords(words []string, n int) []string {
+func getPasshphrase(words []string, n int) string {
 	var out []string
 	for i := 0; i < n; i++ {
 		k, _ := rand.Int(rand.Reader, big.NewInt(int64(len(words))))
 		out = append(out, words[k.Int64()])
 	}
-	return out
+	return strings.Join(out, " ")
+}
+
+func getPin(n int) string {
+	var out []string
+	for i := 0; i < n; i++ {
+		k, _ := rand.Int(rand.Reader, big.NewInt(10))
+		out = append(out, strconv.Itoa(int(k.Int64())))
+	}
+	return strings.Join(out, "")
 }
 
 func main() {
-	args := os.Args
+	flag.Parse()
 
-	if len(args) < 3 {
-		fmt.Print("\nDiceware password generator\n\n" +
-			"Usage: ./godw FILE LENGTH\n\n" +
-			"FILE   The diceware word file\n" +
-			"LENGTH Number of words in the passphrase\n\n")
-		os.Exit(0)
-	}
-
-	filename := args[1]
-	length, err := strconv.Atoi(args[2])
-
-	if err != nil {
-		panic(err)
-	} else if length < 1 {
-		fmt.Println("Passphrase must contain at least 1 word")
+	if *length == 0 {
+		fmt.Println("The passphrase/pin length must be greater than 0")
 		os.Exit(1)
 	}
 
-	words, err := getWords(filename)
-
-	if err != nil {
-		panic(err)
+	if *pin {
+		fmt.Println(getPin(*length))
+	} else {
+		words, err := getWords(*filename)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+		fmt.Println(getPasshphrase(words, *length))
 	}
-
-	passphrase := strings.Join(chooseWords(words, length), " ")
-
-	fmt.Println(passphrase)
 }
