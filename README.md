@@ -22,18 +22,45 @@ $ go get github.com/g4lvanix/godw
 
 Additionally, please obtain one of the wordlists from the sources mentioned above.
 
+On Linux you can use the `wget` command: 
+
+```
+$ wget https://www.eff.org/files/2016/07/18/eff_large_wordlist.txt
+```
+
 ## Usage 
 
-```
-$ ./godw FILE LENGTH
-```
+### Diceware passphrases 
 
-Where `FILE` is one of the wordlists mentioned above and `LENGTH` is the 
-number of words in the passhprase. 
+```
+Usage of ./godw:
+  -f string
+        name of the diceware wordlist file (default "eff_large_wordlist.txt")
+  -l int
+        length of the generated passphrase or pin
+  -p    generate a numeric pin
+```
 
 To generate a 5 word long passhphrase with words chosen from EFFs large wordlist:
+
 ```
-$ ./godw eff_large_wordlist.txt 5
+$ ./godw -l 5
+```
+
+To use a different word list:
+
+```
+$ ./godw -f eff_short_wordlist_1.txt -l 5
+```
+
+### Numeric PINs
+
+`godw` can also create numeric passwords for use as a PIN (personal identification number). 
+
+To generate a 4 digit PIN:
+
+```
+$ ./godw -p -l 4
 ```
 
 ## Notes 
