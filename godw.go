@@ -20,7 +20,7 @@ func getWords(fname string) ([]string, error) {
 
 	file, err := os.Open(fname)
 	if err != nil {
-		return words, err
+		return nil, err
 	}
 	defer file.Close()
 
@@ -53,7 +53,7 @@ func getPin(n int) string {
 func main() {
 	flag.Parse()
 
-	if *length == 0 {
+	if *length <= 0 {
 		fmt.Print("The passphrase/pin length must be greater than 0\n\n")
 		flag.Usage()
 		os.Exit(1)
